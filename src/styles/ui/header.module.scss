@@ -5,7 +5,7 @@
   position: fixed;
   z-index: 10;
   width: 100%;
-  height: 130px;
+  height: 100px;
   top: 0;
   padding: 10px 30px 20px 30px;
   display: flex;
@@ -20,7 +20,6 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 7px;
     font-size: $xx-large-font;
     font-weight: bold;
     color: $blue-200;
@@ -44,7 +43,6 @@
   }
 
   .subTitle {
-    padding-top: 15px;
     font-size: $small-font;
     font-weight: bold;
     color: $blue-200;
@@ -52,20 +50,6 @@
 
     @include TABLET {
       font-size: $x-small-font;
-    }
-
-    @include MOBILE {
-      font-size: $xx-small-font;
-    }
-  }
-
-  .subTitle2 {
-    font-size: $x-small-font;
-    font-weight: bold;
-    color: $blue-200;
-
-    @include TABLET {
-      font-size: $xx-small-font;
     }
 
     @include MOBILE {

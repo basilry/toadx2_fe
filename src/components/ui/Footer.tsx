@@ -28,6 +28,11 @@ const Footer = (): ReactElement => {
                                 <Image src={"/n-solid_white.svg"} alt="n-solid" width={20} height={20} />
                             </Link>
                         </div>
+                        <div className={styles.socialLogo}>
+                            <Link href="https://basilry.github.io/kbslBlog/">
+                                <Image src={"/icons8-home.svg"} alt="n-solid" width={20} height={20} />
+                            </Link>
+                        </div>
                     </div>
                     <p>+82 10-8936-4302</p>
                 </div>
