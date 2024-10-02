@@ -19,6 +19,10 @@ export default function RootLayout({
 }>): ReactElement {
     return (
         <html lang="en">
+            <head>
+                <title>{"Toadx2 | 두껍아두껍아"}</title>
+                <link rel="icon" href="/pepe.png" />
+            </head>
             <body>
                 <SuspenseWrapper>
                     <Container>
