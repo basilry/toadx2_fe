@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios"
 
 const axiosInstance: AxiosInstance = axios.create({
-    baseURL: `${process.env.NEXT_PUBLIC_IP}:${process.env.NEXT_PUBLIC_PORT}`,
+    baseURL: `${process.env.NEXT_PUBLIC_TOADX2_API}`,
     headers: { "Content-Type": "application/json; charset=utf-8" },
     responseType: "json",
     withCredentials: true,
