@@ -12,7 +12,7 @@ const Header = (): ReactElement => {
                 <div className={styles.paragraph}>
                     <p>{"Toadx2"}</p>
                     <div className={styles.divider} />
-                    <p>{"두껍아뚜겁아"}</p>
+                    <p>{"두껍아두껍아"}</p>
                 </div>
             </div>
             <div className={styles.subTitle}>
