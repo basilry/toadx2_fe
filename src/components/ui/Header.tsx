@@ -9,7 +9,11 @@ const Header = (): ReactElement => {
         <div className={styles.headerWrapper}>
             <div className={styles.title}>
                 <Image src={"/pepe.png"} alt={"pepe"} width={40} height={40} />
-                {"Toadx2 : 두껍아뚜겁아"}
+                <div className={styles.paragraph}>
+                    <p>{"Toadx2"}</p>
+                    <div className={styles.divider} />
+                    <p>{"두껍아뚜겁아"}</p>
+                </div>
             </div>
             <div className={styles.subTitle}>
                 {

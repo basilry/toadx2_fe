@@ -1,59 +1,69 @@
-@import '@styles/variable.scss';
-
+@import "@styles/variable.scss";
 
 .headerWrapper {
-  position: fixed;
-  z-index: 10;
-  width: 100%;
-  height: 100px;
-  top: 0;
-  padding: 10px 30px 20px 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background-color: $green-pressed;
-  color: $blue-200;
-  min-width: 300px;
-
-
-  .title {
+    position: fixed;
+    z-index: 10;
+    width: 100%;
+    height: 100px;
+    top: 0;
+    padding: 10px 30px 20px 30px;
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    font-size: $xx-large-font;
-    font-weight: bold;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: $green-pressed;
     color: $blue-200;
+    min-width: 300px;
 
-    &:hover {
-      cursor: pointer;
-      opacity: 0.8;
+    .title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-size: $xx-large-font;
+        font-weight: bold;
+        color: $blue-200;
+        gap: 7px;
+
+        .paragraph {
+            gap: 7px;
+            display: flex;
+            align-content: center;
+            align-items: center;
+
+            .divider {
+                height: 30px;
+                border-right: 2px solid $blue-200;
+            }
+
+            &:hover {
+                cursor: pointer;
+                opacity: 0.7;
+            }
+
+            &:active {
+                opacity: 1;
+            }
+        }
+
+        @include TABLET {
+            font-size: $x-large-font;
+        }
+
+        @include MOBILE {
+            font-size: $large-font;
+        }
     }
 
-    &:active {
-      opacity: 1;
+    .subTitle {
+        font-size: $small-font;
+        font-weight: bold;
+        color: $blue-200;
+
+        @include TABLET {
+            font-size: $x-small-font;
+        }
+
+        @include MOBILE {
+            font-size: $xx-small-font;
+        }
     }
-
-    @include TABLET {
-      font-size: $x-large-font;
-    }
-
-    @include MOBILE {
-      font-size: $large-font;
-    }
-  }
-
-  .subTitle {
-    font-size: $small-font;
-    font-weight: bold;
-    color: $blue-200;
-
-
-    @include TABLET {
-      font-size: $x-small-font;
-    }
-
-    @include MOBILE {
-      font-size: $xx-small-font;
-    }
-  }
 }
