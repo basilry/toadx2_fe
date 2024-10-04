@@ -7,7 +7,7 @@ import nProgress from "nprogress"
 import { v4 } from "uuid"
 import classNames from "classnames"
 import chatData from "@data/chat_sample.json"
-import Wrapper from "@components/Wrapper"
+import Wrapper from "@components/layout/Wrapper"
 import axiosInstance from "@lib/api/axiosInstance"
 import styles from "@styles/page/toadx2.module.scss"
 
@@ -85,6 +85,12 @@ export default function Home(): React.ReactElement {
                             )}
                         </div>
                     ))}
+                </div>
+                <div className={styles.disabled}>
+                    <div className={styles.disabledText}>
+                        <Image src={"/pepe-cheers.png"} width={40} height={40} alt={"pepe-cheers"} />
+                        <p>두껍이가 답변을 준비중입니다!</p>
+                    </div>
                 </div>
             </div>
             <div className={classNames(styles.chatInputWrapper)}>

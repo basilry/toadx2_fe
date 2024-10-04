@@ -4,8 +4,8 @@ import type { Metadata } from "next"
 import "@styles/global.scss"
 import "@styles/font.scss"
 import "@styles/toast.scss"
-import Container from "@components/Container"
-import SuspenseWrapper from "@components/SuspenseWrapper"
+import Container from "@components/layout/Container"
+import SuspenseWrapper from "@components/layout/SuspenseWrapper"
 
 export const metadata: Metadata = {
     title: "Create Next App",
