@@ -7,6 +7,7 @@ import nProgress from "nprogress"
 import { v4 } from "uuid"
 import classNames from "classnames"
 import chatData from "@data/chat_sample.json"
+import refData from "@data/reference_list.json"
 import Wrapper from "@components/layout/Wrapper"
 import axiosInstance from "@lib/api/axiosInstance"
 import styles from "@styles/page/toadx2.module.scss"
@@ -15,6 +16,7 @@ export default function Home(): React.ReactElement {
     const inputWrapperRef = useRef<HTMLDivElement>(null)
     const [inputActive, setInputActive] = useState(false)
     const [userChat, setUserChat] = useState("")
+    const [openReference, setOpenReference] = useState(false)
 
     const startLoading = (): nProgress.NProgress => nProgress.start()
     const endLoading = (): nProgress.NProgress => nProgress.done()
@@ -109,53 +111,25 @@ export default function Home(): React.ReactElement {
                 </div>
             </div>
             <div className={styles.advertisement}>
-                <div className={styles.sectionTitle}>Reference</div>
-                <div className={styles.eachAdvertisement}>
-                    <div className={styles.title}>F/E Source</div>
-                    <Link
-                        className={styles.subTitle}
-                        href={"https://github.com/basilry/toadx2_fe"}
-                    >{`Toadx2 F/E Github Link`}</Link>
+                <div className={styles.sectionTitle}>
+                    <p>Reference</p>
+                    <p
+                        className={classNames(styles.icon, openReference && styles.active)}
+                        onClick={() => setOpenReference(!openReference)}
+                    >
+                        ▲
+                    </p>
                 </div>
-                <div className={styles.eachAdvertisement}>
-                    <div className={styles.title}>B/E Source</div>
-
-                    <Link
-                        className={styles.subTitle}
-                        href={"https://github.com/basilry/toadx2_api"}
-                    >{`Toadx2 B/E Github Link`}</Link>
-                </div>
-                <div className={styles.eachAdvertisement}>
-                    <div className={styles.title}>Based Model</div>
-
-                    <Link
-                        className={styles.subTitle}
-                        href={"https://huggingface.co/google/gemma-2-2b-it"}
-                    >{`Google's Gemma2-2-2b-it`}</Link>
-                </div>
-                <div className={styles.eachAdvertisement}>
-                    <div className={styles.title}>FineTuned Model</div>
-
-                    <Link
-                        className={styles.subTitle}
-                        href={"https://huggingface.co/basilry/gemma2-2-2b-it-fine-tuned-korean-real-estate-model"}
-                    >{`basilry/gemma2-2-2b-it-fine-tuned-korean-real-estate-model`}</Link>
-                </div>
-                {/*    프론트 깃헙, api 깃헙, 데이터셋*/}
-                <div className={styles.eachAdvertisement}>
-                    <div className={styles.title}>Korean Safe Conversation Dataset</div>
-                    <Link
-                        className={styles.subTitle}
-                        href={"https://huggingface.co/datasets/jojo0217/korean_safe_conversation"}
-                    >{`jojo0217/korean_safe_conversation`}</Link>
-                </div>
-                <div className={styles.eachAdvertisement}>
-                    <div className={styles.title}>{`KB Real Estate Data Hub's Apartment Dataset`}</div>
-                    <Link
-                        className={styles.subTitle}
-                        href={"https://data.kbland.kr/"}
-                    >{`KB Real Estate Data Hub`}</Link>
-                </div>
+                {openReference && (
+                    <div className={classNames(styles.contentsWrapper, openReference && styles.active)}>
+                        {refData.map((row) => (
+                            <Link key={row.id} className={styles.eachAdvertisement} href={row.link}>
+                                <div className={styles.title}>{row.title}</div>
+                                <div className={styles.subTitle}>{row.subTitle}</div>
+                            </Link>
+                        ))}
+                    </div>
+                )}
             </div>
         </Wrapper>
     )

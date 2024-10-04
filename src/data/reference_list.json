@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "title": "F/E Source",
+        "subTitle": "Toadx2 F/E Github Link",
+        "link": "https://github.com/basilry/toadx2_fe"
+    },
+    {
+        "id": 2,
+        "title": "B/E Source",
+        "subTitle": "Toadx2 B/E Github Link",
+        "link": "https://github.com/basilry/toadx2_api"
+    },
+    {
+        "id": 3,
+        "title": "Based Model",
+        "subTitle": "Google's Gemma2-2-2b-it",
+        "link": "https://huggingface.co/google/gemma-2-2b-it"
+    },
+    {
+        "id": 4,
+        "title": "FineTuned Model",
+        "subTitle": "basilry/gemma2-2-2b-it-fine-tuned-korean-real-estate-model",
+        "link": "https://huggingface.co/basilry/gemma2-2-2b-it-fine-tuned-korean-real-estate-model"
+    },
+    {
+        "id": 5,
+        "title": "Korean Safe Conversation Dataset",
+        "subTitle": "jojo0217/korean_safe_conversation",
+        "link": "https://huggingface.co/datasets/jojo0217/korean_safe_conversation"
+    },
+    {
+        "id": 6,
+        "title": "KB Real Estate Data Hub's Apartment Dataset",
+        "subTitle": "KB Real Estate Data Hub",
+        "link": "https://data.kbland.kr/"
+    }
+]

@@ -44,6 +44,19 @@
                 &.userWrapper {
                     background-color: $black-200;
                 }
+
+                .chatText {
+                    font-size: $medium-font;
+                    color: $black-800;
+
+                    @include TABLET {
+                        font-size: $small-font;
+                    }
+
+                    @include MOBILE {
+                        font-size: $x-small-font;
+                    }
+                }
             }
         }
     }
@@ -134,32 +147,34 @@
     padding: 15px 20px;
 
     .sectionTitle {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
         font-size: $xx-large-font;
         font-weight: bold;
         color: $black-800;
         margin-bottom: 20px;
         border-bottom: 1px solid $black-600;
-    }
 
-    .eachAdvertisement {
-        margin-top: 5px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 10px;
-        background-color: $black-100;
-        padding: 10px;
-        border-radius: 5px;
-
-        .title {
-            font-size: $medium-font;
-            font-weight: bold;
-            color: $black-800;
+        @include TABLET {
+            font-size: $x-large-font;
         }
 
-        .subTitle {
-            font-size: $small-font;
-            color: $black-800;
+        @include MOBILE {
+            font-size: $large-font;
+        }
+
+        .icon {
+            font-size: $large-font;
+
+            @include TABLET {
+                font-size: $medium-font;
+            }
+
+            @include MOBILE {
+                font-size: $small-font;
+            }
 
             &:hover {
                 cursor: pointer;
@@ -168,6 +183,59 @@
 
             &:active {
                 opacity: 1;
+            }
+
+            &.active {
+                transform: rotateX(180deg);
+            }
+        }
+    }
+
+    .contentsWrapper {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+
+        &.active {
+            max-height: 500px;
+        }
+    }
+
+    .eachAdvertisement {
+        margin-top: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        gap: 10px;
+        background-color: $black-100;
+        padding: 10px;
+        border-radius: 5px;
+
+        &:hover {
+            cursor: pointer;
+            background-color: $black-300;
+        }
+
+        &:active {
+            opacity: 1;
+        }
+
+        .title {
+            font-size: $medium-font;
+            font-weight: bold;
+            color: $black-800;
+
+            @include TABLET {
+                font-size: $small-font;
+            }
+        }
+
+        .subTitle {
+            font-size: $small-font;
+            color: $black-800;
+
+            @include TABLET {
+                font-size: $x-small-font;
             }
         }
     }
