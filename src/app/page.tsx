@@ -6,16 +6,25 @@ import Link from "next/link"
 import nProgress from "nprogress"
 import { v4 } from "uuid"
 import classNames from "classnames"
-import chatData from "@data/chat_sample.json"
 import refData from "@data/reference_list.json"
 import Wrapper from "@components/layout/Wrapper"
 import axiosInstance from "@lib/api/axiosInstance"
+import { useUserStore } from "@lib/store/store"
 import styles from "@styles/page/toadx2.module.scss"
+
+export interface IChatData {
+    id: string
+    contents: string
+}
 
 export default function Home(): React.ReactElement {
     const inputWrapperRef = useRef<HTMLDivElement>(null)
+    const { userSessionId, setUserSessionId } = useUserStore()
+
     const [inputActive, setInputActive] = useState(false)
+    const [firstYn, setFirstYn] = useState(true)
     const [userChat, setUserChat] = useState("")
+    const [chatHistory, setChatHistory] = useState<IChatData[]>([])
     const [openReference, setOpenReference] = useState(false)
 
     const startLoading = (): nProgress.NProgress => nProgress.start()
@@ -24,20 +33,53 @@ export default function Home(): React.ReactElement {
     const getChatData = (): void => {
         startLoading()
 
+        const userNowChat: IChatData = {
+            id: "user",
+            contents: userChat,
+        }
+
         axiosInstance
             .post("/gemma2/chat", {
                 message: userChat,
-                session_id: v4(),
+                session_id: firstYn ? "" : userSessionId,
             })
             .then((res) => {
-                endLoading()
+                if (firstYn) {
+                    setFirstYn(false)
+                    setChatHistory([{ id: "toad", contents: res.data.response }])
+                } else {
+                    setChatHistory([...chatHistory, userNowChat, { id: "toad", contents: res.data.response }])
+                }
                 console.log(res)
             })
             .catch((err) => {
-                endLoading()
+                setChatHistory([
+                    ...chatHistory,
+                    userNowChat,
+                    {
+                        id: "toad",
+                        contents: "에러가 발생했습니다. 잠시 뒤에 다시 메시지를 전송해주세요~두껍!",
+                    },
+                ])
                 console.log(err)
             })
+            .finally(() => {
+                setFirstYn(false)
+                endLoading()
+                setUserChat("")
+                console.log("finally")
+            })
     }
+
+    useEffect(() => {
+        getChatData()
+    }, [])
+
+    useEffect(() => {
+        if (!userSessionId) {
+            setUserSessionId(v4())
+        }
+    }, [setUserSessionId, userSessionId])
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent): void => {
@@ -57,7 +99,7 @@ export default function Home(): React.ReactElement {
         <Wrapper>
             <div className={styles.chatWrapper}>
                 <div className={styles.chatHistory}>
-                    {chatData.map((row) => (
+                    {chatHistory.map((row) => (
                         <div
                             key={v4()}
                             className={classNames(
@@ -88,12 +130,12 @@ export default function Home(): React.ReactElement {
                         </div>
                     ))}
                 </div>
-                <div className={styles.disabled}>
-                    <div className={styles.disabledText}>
-                        <Image src={"/pepe-cheers.png"} width={40} height={40} alt={"pepe-cheers"} />
-                        <p>두껍이가 답변을 준비중입니다!</p>
-                    </div>
-                </div>
+                {/*<div className={styles.disabled}>*/}
+                {/*    <div className={styles.disabledText}>*/}
+                {/*        <Image src={"/pepe-cheers.png"} width={40} height={40} alt={"pepe-cheers"} />*/}
+                {/*        <p>두껍이가 답변을 준비중입니다!</p>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </div>
             <div className={classNames(styles.chatInputWrapper)}>
                 <div ref={inputWrapperRef} className={styles.chatInput}>
@@ -104,6 +146,7 @@ export default function Home(): React.ReactElement {
                         maxLength={150}
                         value={userChat}
                         onChange={(e) => setUserChat(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && getChatData()}
                     />
                 </div>
                 <div className={styles.chatButton}>

@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import "@styles/global.scss"
 import "@styles/font.scss"
 import "@styles/toast.scss"
+import "@styles/nprogress.scss"
 import Container from "@components/layout/Container"
 import SuspenseWrapper from "@components/layout/SuspenseWrapper"
 
