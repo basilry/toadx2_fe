@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from "react"
+import React, { ReactElement, useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import nProgress from "nprogress"
@@ -17,8 +17,14 @@ export interface IChatData {
     contents: string
 }
 
+export interface IResponseData {
+    response: string
+    session_id: string
+}
+
 export default function Home(): React.ReactElement {
     const inputWrapperRef = useRef<HTMLDivElement>(null)
+    const chatContainerRef = useRef<HTMLDivElement>(null)
     const { userSessionId, setUserSessionId } = useUserStore()
 
     const [inputActive, setInputActive] = useState(false)
@@ -29,6 +35,12 @@ export default function Home(): React.ReactElement {
 
     const startLoading = (): nProgress.NProgress => nProgress.start()
     const endLoading = (): nProgress.NProgress => nProgress.done()
+
+    const scrollToBottom = (): void => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight
+        }
+    }
 
     const getChatData = (): void => {
         startLoading()
@@ -71,15 +83,21 @@ export default function Home(): React.ReactElement {
             })
     }
 
+    const doGetNewChatResponse = (row: any): ReactElement => {
+        console.log(row)
+
+        if (row.id === "user") {
+            return <div>{row.contnents}</div>
+        }
+
+        //
+        // return <div>{contents}</div>
+        return <></>
+    }
+
     useEffect(() => {
         getChatData()
     }, [])
-
-    useEffect(() => {
-        if (!userSessionId) {
-            setUserSessionId(v4())
-        }
-    }, [setUserSessionId, userSessionId])
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent): void => {
@@ -95,10 +113,20 @@ export default function Home(): React.ReactElement {
         }
     }, [])
 
+    useEffect(() => {
+        scrollToBottom() // 메시지 업데이트 시 항상 스크롤을 가장 밑으로
+    }, [chatHistory])
+
+    useEffect(() => {
+        if (!userSessionId) {
+            setUserSessionId(v4())
+        }
+    }, [setUserSessionId, userSessionId])
+
     return (
         <Wrapper>
             <div className={styles.chatWrapper}>
-                <div className={styles.chatHistory}>
+                <div className={styles.chatHistory} ref={chatContainerRef}>
                     {chatHistory.map((row) => (
                         <div
                             key={v4()}
@@ -120,7 +148,7 @@ export default function Home(): React.ReactElement {
                                     row.id === "user" && styles.userWrapper,
                                 )}
                             >
-                                <div className={styles.chatText}>{row.contents}</div>
+                                <div className={styles.chatText}>{doGetNewChatResponse(row)}</div>
                             </div>
                             {row.id === "user" && (
                                 <div className={styles.chatIcon}>

@@ -5,7 +5,7 @@ const axiosInstance: AxiosInstance = axios.create({
     headers: { "Content-Type": "application/json; charset=utf-8" },
     responseType: "json",
     withCredentials: true,
-    timeout: 30000,
+    timeout: 50000,
 })
 
 const requestSuccessHandler = (request: any): Promise<any> => {

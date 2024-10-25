@@ -1,247 +1,249 @@
 @import "@styles/variable.scss";
 
 .chatWrapper {
-    position: relative;
-    border: 3px solid $green-pressed;
-    border-radius: 7px;
-    height: 600px;
-    min-width: 300px;
-    padding: 30px 30px;
-    background-color: $black-100;
-    overflow: hidden;
+  position: relative;
+  border: 3px solid $green-pressed;
+  border-radius: 7px;
+  height: 600px;
+  min-width: 300px;
+  padding: 30px 30px;
+  background-color: $black-100;
+  overflow: scroll;
 
-    .chatHistory {
-        .eachChatWrapper {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 4px;
-            margin-bottom: 20px;
-            border-radius: 10px;
+  .chatHistory {
+    .eachChatWrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 20px;
+      border-radius: 10px;
 
-            &.toadWrapper {
-                justify-content: left;
-            }
-            &.userWrapper {
-                justify-content: right;
-            }
+      &.toadWrapper {
+        justify-content: left;
+      }
 
-            .chatIcon {
-                display: flex;
-                align-items: center;
-                background-color: $black-200;
-                padding: 20px;
-                border-radius: 50px;
-            }
+      &.userWrapper {
+        justify-content: right;
+      }
 
-            .chatBubble {
-                border-radius: 7px;
-                padding: 10px;
+      .chatIcon {
+        display: flex;
+        align-items: center;
+        background-color: $black-200;
+        padding: 20px;
+        border-radius: 50px;
+      }
 
-                &.toadWrapper {
-                    background-color: $green-disable;
-                }
-                &.userWrapper {
-                    background-color: $black-200;
-                }
+      .chatBubble {
+        border-radius: 7px;
+        padding: 10px;
 
-                .chatText {
-                    font-size: $medium-font;
-                    color: $black-800;
-
-                    @include TABLET {
-                        font-size: $small-font;
-                    }
-
-                    @include MOBILE {
-                        font-size: $x-small-font;
-                    }
-                }
-            }
+        &.toadWrapper {
+          background-color: $green-disable;
         }
-    }
 
-    .disabled {
-        top: 0;
-        left: 0;
-        opacity: 0.8;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background-color: $green-disable;
-
-        .disabledText {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            font-size: $xx-large-font;
-            font-weight: bold;
-            color: $black-900;
+        &.userWrapper {
+          background-color: $black-200;
         }
+
+        .chatText {
+          font-size: $medium-font;
+          color: $black-800;
+
+          @include TABLET {
+            font-size: $small-font;
+          }
+
+          @include MOBILE {
+            font-size: $x-small-font;
+          }
+        }
+      }
     }
+  }
+
+  .disabled {
+    top: 0;
+    left: 0;
+    opacity: 0.8;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: $green-disable;
+
+    .disabledText {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      font-size: $xx-large-font;
+      font-weight: bold;
+      color: $black-900;
+    }
+  }
 }
 
 .chatInputWrapper {
-    margin-top: 10px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+
+  .chatInput {
+    width: 100%;
+    height: 100%;
+
+    input {
+      border: 2px solid $green-disable;
+      border-radius: 6px;
+      width: 100%;
+      height: 100%;
+      outline: none;
+      padding: 10px;
+      font-size: $medium-font;
+
+      &.active {
+        border: 2px solid $green;
+      }
+    }
+  }
+
+  .chatButton {
+    width: 100px;
+    height: 45px;
+    background-color: $green-default;
+    border-radius: 6px;
     display: flex;
-    flex-direction: row;
+    justify-content: center;
     align-items: center;
-    gap: 4px;
 
-    .chatInput {
-        width: 100%;
-        height: 100%;
+    button {
+      padding: 5px 4px;
+      width: 100%;
+      height: 40px;
+      border: none;
+      background-color: transparent;
+      color: $white;
+      font-size: $small-font;
+      font-weight: bold;
+      cursor: pointer;
 
-        input {
-            border: 2px solid $green-disable;
-            border-radius: 6px;
-            width: 100%;
-            height: 100%;
-            outline: none;
-            padding: 10px;
-            font-size: $medium-font;
+      &:hover {
+        opacity: 0.8;
+      }
 
-            &.active {
-                border: 2px solid $green;
-            }
-        }
+      &:active {
+        opacity: 1;
+      }
     }
-
-    .chatButton {
-        width: 100px;
-        height: 45px;
-        background-color: $green-default;
-        border-radius: 6px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        button {
-            padding: 5px 4px;
-            width: 100%;
-            height: 40px;
-            border: none;
-            background-color: transparent;
-            color: $white;
-            font-size: $small-font;
-            font-weight: bold;
-            cursor: pointer;
-
-            &:hover {
-                opacity: 0.8;
-            }
-
-            &:active {
-                opacity: 1;
-            }
-        }
-    }
+  }
 }
 
 .advertisement {
-    margin-top: 100px;
-    margin-bottom: 50px;
-    background-color: $black-200;
-    border-radius: 10px;
-    padding: 15px 20px;
+  margin-top: 100px;
+  margin-bottom: 50px;
+  background-color: $black-200;
+  border-radius: 10px;
+  padding: 15px 20px;
 
-    .sectionTitle {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        font-size: $xx-large-font;
-        font-weight: bold;
-        color: $black-800;
-        margin-bottom: 20px;
-        border-bottom: 1px solid $black-600;
+  .sectionTitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: $xx-large-font;
+    font-weight: bold;
+    color: $black-800;
+    margin-bottom: 20px;
+    border-bottom: 1px solid $black-600;
 
-        @include TABLET {
-            font-size: $x-large-font;
-        }
-
-        @include MOBILE {
-            font-size: $large-font;
-        }
-
-        .icon {
-            font-size: $large-font;
-
-            @include TABLET {
-                font-size: $medium-font;
-            }
-
-            @include MOBILE {
-                font-size: $small-font;
-            }
-
-            &:hover {
-                cursor: pointer;
-                opacity: 0.7;
-            }
-
-            &:active {
-                opacity: 1;
-            }
-
-            &.active {
-                transform: rotateX(180deg);
-            }
-        }
+    @include TABLET {
+      font-size: $x-large-font;
     }
 
-    .contentsWrapper {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.2s ease-out;
-
-        &.active {
-            max-height: 500px;
-        }
+    @include MOBILE {
+      font-size: $large-font;
     }
 
-    .eachAdvertisement {
-        margin-top: 5px;
-        display: flex;
-        flex-direction: column;
-        justify-content: left;
-        gap: 10px;
-        background-color: $black-100;
-        padding: 10px;
-        border-radius: 5px;
+    .icon {
+      font-size: $large-font;
 
-        &:hover {
-            cursor: pointer;
-            background-color: $black-300;
-        }
+      @include TABLET {
+        font-size: $medium-font;
+      }
 
-        &:active {
-            opacity: 1;
-        }
+      @include MOBILE {
+        font-size: $small-font;
+      }
 
-        .title {
-            font-size: $medium-font;
-            font-weight: bold;
-            color: $black-800;
+      &:hover {
+        cursor: pointer;
+        opacity: 0.7;
+      }
 
-            @include TABLET {
-                font-size: $small-font;
-            }
-        }
+      &:active {
+        opacity: 1;
+      }
 
-        .subTitle {
-            font-size: $small-font;
-            color: $black-800;
-
-            @include TABLET {
-                font-size: $x-small-font;
-            }
-        }
+      &.active {
+        transform: rotateX(180deg);
+      }
     }
+  }
+
+  .contentsWrapper {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+
+    &.active {
+      max-height: 500px;
+    }
+  }
+
+  .eachAdvertisement {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    gap: 10px;
+    background-color: $black-100;
+    padding: 10px;
+    border-radius: 5px;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $black-300;
+    }
+
+    &:active {
+      opacity: 1;
+    }
+
+    .title {
+      font-size: $medium-font;
+      font-weight: bold;
+      color: $black-800;
+
+      @include TABLET {
+        font-size: $small-font;
+      }
+    }
+
+    .subTitle {
+      font-size: $small-font;
+      color: $black-800;
+
+      @include TABLET {
+        font-size: $x-small-font;
+      }
+    }
+  }
 }
 
 .divider {
-    height: 15px;
-    border-right: 2px solid $black-800;
+  height: 15px;
+  border-right: 2px solid $black-800;
 }
