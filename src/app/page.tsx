@@ -14,7 +14,9 @@ import styles from "@styles/page/toadx2.module.scss"
 
 export interface IChatData {
     id: string
+    type: string
     contents: string
+    model?: string
 }
 
 export interface IResponseData {
@@ -47,6 +49,7 @@ export default function Home(): React.ReactElement {
 
         const userNowChat: IChatData = {
             id: "user",
+            type: "text",
             contents: userChat,
         }
 
@@ -58,9 +61,18 @@ export default function Home(): React.ReactElement {
             .then((res) => {
                 if (firstYn) {
                     setFirstYn(false)
-                    setChatHistory([{ id: "toad", contents: res.data.response }])
+                    setChatHistory([{ id: "toad", type: res.data.type, contents: res.data.response }])
                 } else {
-                    setChatHistory([...chatHistory, userNowChat, { id: "toad", contents: res.data.response }])
+                    setChatHistory([
+                        ...chatHistory,
+                        userNowChat,
+                        {
+                            id: "toad",
+                            type: res.data.type,
+                            contents: res.data.response,
+                            model: res.data.model_response,
+                        },
+                    ])
                 }
                 console.log(res)
             })
@@ -70,6 +82,7 @@ export default function Home(): React.ReactElement {
                     userNowChat,
                     {
                         id: "toad",
+                        type: "text",
                         contents: "에러가 발생했습니다. 잠시 뒤에 다시 메시지를 전송해주세요~두껍!",
                     },
                 ])
@@ -86,13 +99,31 @@ export default function Home(): React.ReactElement {
     const doGetNewChatResponse = (row: any): ReactElement => {
         console.log(row)
 
-        if (row.id === "user") {
-            return <div>{row.contnents}</div>
+        switch (row.type) {
+            case "text":
+                return <div>{row.contents}</div>
+            case "price":
+                // return <></>
+                return (
+                    <div>
+                        <div>{row.model}</div>
+                        <div>
+                            {row.contents.map((row: any) => (
+                                <div key={v4()}>{row.price}</div>
+                            ))}
+                        </div>
+                    </div>
+                )
+            default:
+                return <></>
         }
+
+        // if (row.id === "user") {
+        //     return <div>{row.contnents}</div>
+        // }
 
         //
         // return <div>{contents}</div>
-        return <></>
     }
 
     useEffect(() => {
