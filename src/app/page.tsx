@@ -98,19 +98,23 @@ export default function Home(): React.ReactElement {
 
     const doGetNewChatResponse = (row: any): ReactElement => {
         console.log(row)
+        const priceData = row.contents.formatted_price_data
+        console.log(priceData)
 
         switch (row.type) {
             case "text":
                 return <div>{row.contents}</div>
             case "price":
-                // return <></>
                 return (
                     <div>
                         <div>{row.model}</div>
+                        <br />
                         <div>
-                            {row.contents.map((row: any) => (
-                                <div key={v4()}>{row.price}</div>
-                            ))}
+                            <div>[{row.contents.region + " 매매가"}]</div>
+                            <br />
+                            <div>{row.contents.analysis_summary}</div>
+                            <br />
+                            <div>{row.contents.formatted_price_data}</div>
                         </div>
                     </div>
                 )
