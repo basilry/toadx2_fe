@@ -15,13 +15,20 @@ import styles from "@styles/page/toadx2.module.scss"
 export interface IChatData {
     id: string
     type: string
-    contents: string
+    contents:
+        | string
+        | {
+              region?: string
+              analysis_summary?: string
+              formatted_price_data?: string
+          }
     model?: string
 }
 
 export interface IResponseData {
     response: string
     session_id: string
+    type: string
 }
 
 export default function Home(): React.ReactElement {
@@ -34,6 +41,7 @@ export default function Home(): React.ReactElement {
     const [userChat, setUserChat] = useState("")
     const [chatHistory, setChatHistory] = useState<IChatData[]>([])
     const [openReference, setOpenReference] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const startLoading = (): nProgress.NProgress => nProgress.start()
     const endLoading = (): nProgress.NProgress => nProgress.done()
@@ -46,6 +54,7 @@ export default function Home(): React.ReactElement {
 
     const getChatData = (): void => {
         startLoading()
+        setIsLoading(true)
 
         const userNowChat: IChatData = {
             id: "user",
@@ -54,11 +63,13 @@ export default function Home(): React.ReactElement {
         }
 
         axiosInstance
-            .post("/gemma2/chat", {
+            .post("/model/chat", {
                 message: userChat,
                 session_id: firstYn ? "" : userSessionId,
             })
             .then((res) => {
+                console.log(res)
+
                 if (firstYn) {
                     setFirstYn(false)
                     setChatHistory([{ id: "toad", type: res.data.type, contents: res.data.response }])
@@ -74,7 +85,6 @@ export default function Home(): React.ReactElement {
                         },
                     ])
                 }
-                console.log(res)
             })
             .catch((err) => {
                 setChatHistory([
@@ -86,48 +96,27 @@ export default function Home(): React.ReactElement {
                         contents: "에러가 발생했습니다. 잠시 뒤에 다시 메시지를 전송해주세요~두껍!",
                     },
                 ])
-                console.log(err)
+
+                console.log("에라~", err)
+
+                if (err.response) {
+                    console.log("서버 응답 에러:", err.response.status, err.response.data)
+                } else if (err.request) {
+                    console.log("네트워크 에러:", err.request)
+                } else {
+                    console.log("요청 설정 에러:", err.message)
+                }
             })
             .finally(() => {
                 setFirstYn(false)
                 endLoading()
                 setUserChat("")
-                console.log("finally")
+                setIsLoading(false)
             })
     }
 
-    const doGetNewChatResponse = (row: any): ReactElement => {
-        console.log(row)
-        const priceData = row.contents.formatted_price_data
-        console.log(priceData)
-
-        switch (row.type) {
-            case "text":
-                return <div>{row.contents}</div>
-            case "price":
-                return (
-                    <div>
-                        <div>{row.model}</div>
-                        <br />
-                        <div>
-                            <div>[{row.contents.region + " 매매가"}]</div>
-                            <br />
-                            <div>{row.contents.analysis_summary}</div>
-                            <br />
-                            <div>{row.contents.formatted_price_data}</div>
-                        </div>
-                    </div>
-                )
-            default:
-                return <></>
-        }
-
-        // if (row.id === "user") {
-        //     return <div>{row.contnents}</div>
-        // }
-
-        //
-        // return <div>{contents}</div>
+    const doGetNewChatResponse = (row: IChatData): ReactElement => {
+        return <div>{row.contents as string}</div>
     }
 
     useEffect(() => {
@@ -149,7 +138,12 @@ export default function Home(): React.ReactElement {
     }, [])
 
     useEffect(() => {
-        scrollToBottom() // 메시지 업데이트 시 항상 스크롤을 가장 밑으로
+        console.log("채팅 기록 변경됨, 스크롤 실행")
+        scrollToBottom()
+
+        // DOM 업데이트 후 한 번 더 실행
+        const timer = setTimeout(scrollToBottom, 100)
+        return (): void => clearTimeout(timer)
     }, [chatHistory])
 
     useEffect(() => {
@@ -160,11 +154,11 @@ export default function Home(): React.ReactElement {
 
     return (
         <Wrapper>
-            <div className={styles.chatWrapper}>
-                <div className={styles.chatHistory} ref={chatContainerRef}>
-                    {chatHistory.map((row) => (
+            <div className={styles.chatWrapper} ref={chatContainerRef}>
+                <div className={styles.chatHistory}>
+                    {chatHistory.map((row, index) => (
                         <div
-                            key={v4()}
+                            key={`${row.id}-${index}`}
                             className={classNames(
                                 styles.eachChatWrapper,
                                 row.id === "toad" && styles.toadWrapper,
@@ -193,12 +187,14 @@ export default function Home(): React.ReactElement {
                         </div>
                     ))}
                 </div>
-                {/*<div className={styles.disabled}>*/}
-                {/*    <div className={styles.disabledText}>*/}
-                {/*        <Image src={"/pepe-cheers.png"} width={40} height={40} alt={"pepe-cheers"} />*/}
-                {/*        <p>두껍이가 답변을 준비중입니다!</p>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
+                {isLoading && (
+                    <div className={styles.disabled}>
+                        <div className={styles.disabledText}>
+                            <Image src={"/pepe-cheers.png"} width={40} height={40} alt={"pepe-cheers"} />
+                            <p>두껍이가 답변을 준비중입니다!</p>
+                        </div>
+                    </div>
+                )}
             </div>
             <div className={classNames(styles.chatInputWrapper)}>
                 <div ref={inputWrapperRef} className={styles.chatInput}>
@@ -210,10 +206,13 @@ export default function Home(): React.ReactElement {
                         value={userChat}
                         onChange={(e) => setUserChat(e.target.value)}
                         onKeyDown={(e) => e.key === "Enter" && getChatData()}
+                        disabled={isLoading}
                     />
                 </div>
                 <div className={styles.chatButton}>
-                    <button onClick={() => getChatData()}>전송</button>
+                    <button onClick={() => getChatData()} disabled={isLoading || !userChat.trim()}>
+                        전송
+                    </button>
                 </div>
             </div>
             <div className={styles.advertisement}>
