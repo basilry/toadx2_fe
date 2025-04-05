@@ -14,15 +14,8 @@ import styles from "@styles/page/toadx2.module.scss"
 
 export interface IChatData {
     id: string
-    type: string
-    contents:
-        | string
-        | {
-              region?: string
-              analysis_summary?: string
-              formatted_price_data?: string
-          }
-    model?: string
+    message: string
+    timestamp: string
 }
 
 export interface IResponseData {
@@ -58,8 +51,8 @@ export default function Home(): React.ReactElement {
 
         const userNowChat: IChatData = {
             id: "user",
-            type: "text",
-            contents: userChat,
+            message: userChat,
+            timestamp: new Date().toISOString(),
         }
 
         axiosInstance
@@ -72,16 +65,14 @@ export default function Home(): React.ReactElement {
 
                 if (firstYn) {
                     setFirstYn(false)
-                    setChatHistory([{ id: "toad", type: res.data.type, contents: res.data.response }])
+                    setChatHistory([{ id: "toad", ...res.data }])
                 } else {
                     setChatHistory([
                         ...chatHistory,
                         userNowChat,
                         {
                             id: "toad",
-                            type: res.data.type,
-                            contents: res.data.response,
-                            model: res.data.model_response,
+                            ...res.data,
                         },
                     ])
                 }
@@ -92,8 +83,8 @@ export default function Home(): React.ReactElement {
                     userNowChat,
                     {
                         id: "toad",
-                        type: "text",
-                        contents: "에러가 발생했습니다. 잠시 뒤에 다시 메시지를 전송해주세요~두껍!",
+                        message: "에러가 발생했습니다. 잠시 뒤에 다시 메시지를 전송해주세요~두껍!",
+                        timestamp: new Date().toISOString(),
                     },
                 ])
 
@@ -116,7 +107,7 @@ export default function Home(): React.ReactElement {
     }
 
     const doGetNewChatResponse = (row: IChatData): ReactElement => {
-        return <div>{row.contents as string}</div>
+        return <div>{row.message}</div>
     }
 
     useEffect(() => {
@@ -167,7 +158,7 @@ export default function Home(): React.ReactElement {
                         >
                             {row.id === "toad" && (
                                 <div className={styles.chatIcon}>
-                                    <Image alt={"toadicon"} src={"/pepe.png"} width={25} height={25} />
+                                    <Image alt={"toadicon"} src={"/pepe-basic.png"} width={25} height={25} />
                                 </div>
                             )}
                             <div

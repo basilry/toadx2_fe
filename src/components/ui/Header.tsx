@@ -8,7 +8,7 @@ const Header = (): ReactElement => {
     return (
         <div className={styles.headerWrapper}>
             <div className={styles.title}>
-                <Image src={"/pepe.png"} alt={"pepe"} width={40} height={40} />
+                <Image src={"/pepe-basic.png"} alt={"pepe"} width={40} height={40} />
                 <div className={styles.paragraph}>
                     <p>{"Toadx2"}</p>
                     <div className={styles.divider} />
